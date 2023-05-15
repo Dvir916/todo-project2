@@ -1,7 +1,6 @@
-import React, { useEffect } from'react';
 import { useSelector, useDispatch } from 'react-redux/es/exports';
 import type { RootState } from '../Redux/Store';
-import { taskInsert } from '../Redux/Importer';
+import { eraseTask, taskInsert } from '../Redux/Tasks';
 
 function TextBox(){
 
@@ -13,6 +12,7 @@ function TextBox(){
 
   const textHandle = (e: any) => {
     // console.log(e.target.value)
+    dispatch(eraseTask())
     dispatch(taskInsert(e.target.value))
     // console.log('handler...')
     // console.log(task);

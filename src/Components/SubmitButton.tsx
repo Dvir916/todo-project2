@@ -1,7 +1,7 @@
 import '../App.css';
-import { eraseTask } from '../Redux/Importer';
+import { eraseTask } from '../Redux/Tasks';
 import { useDispatch,useSelector } from 'react-redux';
-import { insertTaskList } from '../Redux/Importer';
+import { insertTaskList } from '../Redux/Tasks';
 import type { RootState } from '../Redux/Store';
 
 function SubmitButton(){
