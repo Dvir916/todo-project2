@@ -14,13 +14,14 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #c8c96b;
+  /* background-color: #282c34; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  /* justify-content: center; */
+  /* font-size: calc(10px + 2vmin); */
   color: white;
 }
 
@@ -35,4 +36,55 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.text-area{
+  margin-top: 100px;
+  height: 25px;
+  width: 250px;
+}
+
+.submit-button{
+  margin-top: 100px;
+  height: 30px;
+  width: 70px;
+}
+
+.show-list{
+  background-color: #b4e9f7;
+  height: 60px;
+  /* width: 150px; */
+  display: flex;
+  margin-top: 20px;
+  font-size: 30px;
+  /* padding-right: 200px; */
+}
+
+.delete-task-button{
+  /* float: right; */
+  text-align:right
+}
+
+
+.eityperc{
+  width: 80%;
+}
+
+.flex{
+  display: flex;
+  margin-left: 10px;
+}
+
+.marginLeft{
+  margin-left: auto;
+  width: 60px;
+}
+
+.sixty{
+  width: 60px;
+}
+
+.strikeLine {
+  text-decoration: line-through;
+  color: #C5C5C5;
 }

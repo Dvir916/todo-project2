@@ -1,24 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useSelector } from 'react-redux';
 import './App.css';
+import Importer from './Components/Importer';
+import type { RootState } from './Redux/Store';
 
 function App() {
+  // const task = useSelector((state:RootState) => state.counter.task)
+  const taskList = useSelector((state:RootState)=> state.tasks.TaskList)
+  // const dispatch = useDispatch()
+
+  const deleteTask = (e: any) => {
+    const todo = e.target.parentNode;
+    todo.remove();
+  };
+
+  const complateTask = (e: any) => {
+    const to = e.target.parentNode.firstChild;
+    to.classList.toggle('strikeLine');
+  };
+
+  const reRender = () =>
+    taskList.map(item => (
+      <div className="show-list">
+        <div className="flex">{item}</div>
+        <button type="submit" onClick={complateTask} className="marginLeft">
+          Done
+        </button>
+        <button type="submit" onClick={deleteTask} className="sixty">
+          Delete
+        </button>
+      </div>
+    ));
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="App">
+        <header className="App-header">
+          <Importer/>
+          <div className="eityperc">{reRender()}</div>
+        </header>
+      </div>
+
     </div>
   );
 }
