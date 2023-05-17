@@ -1,17 +1,32 @@
-const Task = ({ text }: { text: string }) => {
-  const deleteTask = (e: any) => {
-    const todo = e.target.parentNode;
-    todo.remove();
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../Redux/Store";
+import { useState } from "react";
+import { earseTaskFromList } from "../Redux/Tasks";
+
+const Task = ({ text, id }: { text: string; id: string }) => {
+  const taskIdList = useSelector((state: RootState) => state.tasks.Id);
+  const [strikeLine, setStrikeLine] = useState(false);
+  const dispatch = useDispatch();
+
+  const deleteTask = () => {
+    const index = taskIdList.findIndex((item) => item === id);
+    if (index !== -1) {
+      dispatch(earseTaskFromList(index));
+    }
   };
 
-  const complateTask = (e: any) => {
-    const to = e.target.parentNode.firstChild;
-    to.classList.toggle("strikeLine");
+  const complateTask = () => {
+    strikeLine ? setStrikeLine(false) : setStrikeLine(true);
   };
 
   return (
     <div className="show-list">
-      <div className="flex">{text}</div>
+      <div
+        style={{ display: "flex", marginLeft: "10px", wordBreak: "break-all" }}
+        className={strikeLine ? "strikethrough" : ""}
+      >
+        {text}
+      </div>
       <button type="submit" onClick={complateTask} className="marginLeft">
         Done
       </button>

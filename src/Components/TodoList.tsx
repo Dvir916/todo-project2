@@ -4,12 +4,13 @@ import Task from "./Task";
 import "../App.css";
 
 const RenderTodos = () => {
-  const taskList = useSelector((state: RootState) => state.tasks.TaskList);
+  const taskTextList = useSelector((state: RootState) => state.tasks.TaskList);
+  const taskIdList = useSelector((state: RootState) => state.tasks.Id);
 
   return (
     <div className="eityperc">
-      {taskList.map((item) => (
-        <Task text={item} />
+      {taskTextList.map((item, index) => (
+        <Task text={item} id={taskIdList[index]} />
       ))}
     </div>
   );

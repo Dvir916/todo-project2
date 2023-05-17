@@ -18,14 +18,17 @@ const AddTodo = () => {
   };
 
   return (
-    <div>
-      <input
-        className="text-area"
-        type="text"
-        value={task}
-        onChange={(e) => textHandle(e.target.value)}
-        placeholder="Insert your task here:"
-      />
+    <div style={{ display: "flex", marginTop: "5%" }}>
+      <div>
+        <input
+          type="text"
+          className="form__input"
+          placeholder="Insert your task here:"
+          value={task}
+          onChange={(e) => textHandle(e.target.value)}
+        />
+        <label className="form__label">Task</label>
+      </div>
       <input className="button" type="submit" onClick={addTask} />
     </div>
   );
