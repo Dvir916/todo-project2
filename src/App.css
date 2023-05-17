@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #c8c96b;
+  background-color: #ADD8E6;
   /* background-color: #282c34; */
   min-height: 100vh;
   display: flex;
@@ -23,6 +23,38 @@
   /* justify-content: center; */
   /* font-size: calc(10px + 2vmin); */
   color: white;
+}
+
+.button {
+  border-radius: 3px;
+  transition: background .2s linear;
+  background: #00B288;
+  height: 30px;
+  width: 100px;
+  &:after {
+    position: absolute;
+    background: rgba(black, .2);
+    transform: scale(0);
+    height: 50px;
+    width: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    content: '';
+    border-radius: 50%;
+  }
+  &:not(:active) {
+    &:after {
+        animation: ripple .4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    }
+    background: darken(#00B288, 5%);
+  }
 }
 
 .App-link {
@@ -44,11 +76,11 @@
   width: 250px;
 }
 
-.submit-button{
+/* .submit-button{
   margin-top: 15%;
   height: 30px;
   width: 70px;
-}
+} */
 
 .show-list{
   background-color: #b4e9f7;
@@ -58,6 +90,7 @@
   margin-top: 20px;
   font-size: 30px;
   /* padding-right: 200px; */
+  overflow: auto;
 }
 
 .delete-task-button{
@@ -68,11 +101,13 @@
 
 .eityperc{
   width: 80%;
+  overflow: auto;
 }
 
 .flex{
   display: flex;
   margin-left: 10px;
+  word-break: break-all;
 }
 
 .marginLeft{
