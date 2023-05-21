@@ -13,8 +13,12 @@ const AddTodo = () => {
 
   const addTask = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    dispatch(insertTaskList(task));
-    setTask("");
+    if (task.length > 0) {
+      dispatch(insertTaskList(task));
+      setTask("");
+    }
+    window.alert("the task most contain text!");
+    // alertify.message("the task most contain text!");
   };
 
   return (
@@ -29,7 +33,12 @@ const AddTodo = () => {
         />
         <label className="form__label">Task</label>
       </div>
-      <input className="button" type="submit" onClick={addTask} />
+      <input
+        className="button"
+        type="submit"
+        placeholder="SEND"
+        onClick={addTask}
+      />
     </div>
   );
 };

@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import Task from "../Components/Task";
-import { stat } from "fs";
 
 interface tasks {
   TaskList: string[];
