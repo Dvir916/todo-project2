@@ -4,7 +4,7 @@ import Task from "./Task";
 import "../App.css";
 import React from "react";
 
-const RenderTodos = () => {
+const TodoList = () => {
   const taskTextList = useSelector((state: RootState) => state.tasks.TaskList);
   const taskIdList = useSelector((state: RootState) => state.tasks.Id);
 
@@ -16,4 +16,4 @@ const RenderTodos = () => {
     </div>
   );
 };
-export default RenderTodos;
+export default TodoList;

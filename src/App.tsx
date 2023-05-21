@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import AddTodo from "./Components/AddTodo";
-import RenderTodos from "./Components/TodoList";
+import TodoList from "./Components/TodoList";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <AddTodo />
-          <RenderTodos />
+          <TodoList />
         </header>
       </div>
     </div>

@@ -101,10 +101,15 @@
 .marginLeft{
   margin-left: auto;
   width: 60px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .sixty{
   width: 60px;
+  margin-top: auto;
+  margin-bottom: auto;
+  color: rgb(255, 0, 0);
 }
 
 .form__label {
