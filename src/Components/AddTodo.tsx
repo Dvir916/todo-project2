@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux/es/exports";
 import "../App.css";
 import { insertTaskList } from "../Redux/Tasks";
 import { useState } from "react";
+import React from "react";
 
 const AddTodo = () => {
   const dispatch = useDispatch();
@@ -16,8 +17,9 @@ const AddTodo = () => {
     if (task.length > 0) {
       dispatch(insertTaskList(task));
       setTask("");
+    } else {
+      window.alert("the task most contain text!");
     }
-    window.alert("the task most contain text!");
     // alertify.message("the task most contain text!");
   };
 

@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/Store";
 import { useState } from "react";
 import { earseTaskFromList } from "../Redux/Tasks";
+import React from "react";
 
 const Task = ({ text, id }: { text: string; id: string }) => {
   const taskIdList = useSelector((state: RootState) => state.tasks.Id);
