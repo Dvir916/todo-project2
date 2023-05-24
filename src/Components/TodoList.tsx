@@ -1,18 +1,32 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../Redux/Store";
 import Task from "./Task";
 import "../App.css";
 import React from "react";
+import useFetch from "../API/useFetch";
 
+const apiUrl = `http://localhost:4000/data/all`;
 const TodoList = () => {
-  const taskTextList = useSelector((state: RootState) => state.tasks.TaskList);
-  const taskIdList = useSelector((state: RootState) => state.tasks.Id);
+  const { data, loading, error } = useFetch(apiUrl);
+
+  if (loading) {
+    return <div>loading...</div>;
+  }
+  const dataArray = JSON.parse(data.toString());
 
   return (
     <div className="eityperc">
-      {taskTextList.map((item, index) => (
-        <Task text={item} id={taskIdList[index]} />
-      ))}
+      {dataArray.map(
+        (
+          item: { text: string; id: string; isComplete: boolean },
+          index: React.Key
+        ) => (
+          <Task
+            key={index}
+            text={item.text}
+            id={item.id}
+            complate={item.isComplete}
+          />
+        )
+      )}
     </div>
   );
 };

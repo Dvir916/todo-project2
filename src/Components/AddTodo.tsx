@@ -1,12 +1,33 @@
-import { useDispatch } from "react-redux/es/exports";
 import "../App.css";
-import { insertTaskList } from "../Redux/Tasks";
 import { useState } from "react";
 import React from "react";
+import { useFetch } from "use-http";
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
 
 const AddTodo = () => {
-  const dispatch = useDispatch();
   const [task, setTask] = useState("");
+  const apiUrl = `http://localhost:4000/data/addTask`;
+
+  const { post, error, loading } = useFetch(apiUrl);
+
+  const insertTask = async (task: object | BodyInit | undefined) => {
+    try {
+      const response = await post("", task);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+    window.location.reload();
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   const textHandle = (value: string) => {
     setTask(value);
@@ -14,13 +35,12 @@ const AddTodo = () => {
 
   const addTask = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (task.length > 0) {
-      dispatch(insertTaskList(task));
-      setTask("");
-    } else {
-      window.alert("the task most contain text!");
-    }
-    // alertify.message("the task most contain text!");
+    const taskDB = { text: task };
+    taskDB.text.length > 0
+      ? insertTask(taskDB)
+      : alertify.alert("Error", "Task cannot be empty!", function () {
+          alertify.warning("Enter task");
+        });
   };
 
   return (

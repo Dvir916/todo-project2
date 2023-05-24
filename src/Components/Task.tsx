@@ -1,31 +1,49 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/Store";
-import { useState } from "react";
-import { changeStatus, earseTaskFromList } from "../Redux/Tasks";
+import { changeStatus } from "../Redux/Tasks";
 import React from "react";
 import { Checkbox } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { useFetch } from "use-http";
 
-const Task = ({ text, id }: { text: string; id: string }) => {
+const Task = ({
+  text,
+  id,
+  complate,
+}: {
+  text: string;
+  id: string;
+  complate: boolean;
+}) => {
   const taskIdList = useSelector((state: RootState) => state.tasks.Id);
   const IsComplateTask = useSelector(
     (state: RootState) => state.tasks.IsComplate
   );
+  const apiUrl = `http://localhost:4000/data/deleteTask`;
+
+  const options = {
+    method: "DELETE",
+  };
+
+  const { del, loading, error } = useFetch(apiUrl, options);
+
+  const handleDelete = async () => {
+    try {
+      const response = await del(`${id}`);
+      console.log("Delete response:", response);
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
+    window.location.reload();
+  };
 
   const isComplateById = (id: string) => {
     const idIndex = taskIdList.indexOf(id);
     const isComplate = IsComplateTask[idIndex];
-    return isComplate;
+    return isComplate || complate;
   };
 
   const dispatch = useDispatch();
-
-  const deleteTask = () => {
-    const index = taskIdList.findIndex((item) => item === id);
-    if (index !== -1) {
-      dispatch(earseTaskFromList(index));
-    }
-  };
 
   const complateTask = () => {
     const index = taskIdList.findIndex((item) => item === id);
@@ -49,7 +67,7 @@ const Task = ({ text, id }: { text: string; id: string }) => {
       </div>
 
       <div className="sixty">
-        <Delete onClick={deleteTask} />
+        <Delete onClick={handleDelete} />
       </div>
     </div>
   );

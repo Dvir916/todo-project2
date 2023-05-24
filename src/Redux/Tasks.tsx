@@ -34,12 +34,11 @@ export const tasksSlice = createSlice({
     },
 
     changeStatus: (state, action: PayloadAction<number>) => {
-      state.IsComplate[action.payload] = true;
+      state.IsComplate[action.payload] = !state.IsComplate[action.payload];
     },
   },
 });
 
-// Action creators are generated for each case reducer function
 export const { insertTaskList, earseTaskFromList, changeStatus } =
   tasksSlice.actions;
 
