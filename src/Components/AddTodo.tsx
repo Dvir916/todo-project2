@@ -7,18 +7,16 @@ import "alertifyjs/build/css/alertify.css";
 
 const AddTodo = () => {
   const [task, setTask] = useState("");
-  const apiUrl = `http://localhost:4000/data/addTask`;
 
-  const { post, error, loading } = useFetch(apiUrl);
+  const { post, error, loading } = useFetch();
 
   const insertTask = async (task: object | BodyInit | undefined) => {
     try {
-      const response = await post("", task);
-      console.log(response);
+      await post("/data/addTask", task);
     } catch (error) {
       console.error(error);
     }
-    window.location.reload();
+    setTask("");
   };
 
   if (loading) {
@@ -29,7 +27,7 @@ const AddTodo = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const textHandle = (value: string) => {
+  const updateText = (value: string) => {
     setTask(value);
   };
 
@@ -51,7 +49,7 @@ const AddTodo = () => {
           className="form__input"
           placeholder="Insert your task here:"
           value={task}
-          onChange={(e) => textHandle(e.target.value)}
+          onChange={(e) => updateText(e.target.value)}
         />
         <label className="form__label">Task</label>
       </div>

@@ -3,15 +3,18 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import { store } from "./Redux/Store";
-import { Provider } from "react-redux";
+import { Provider as ReduxProvider } from "react-redux";
+import { Provider as FetchProvider } from "use-http";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <FetchProvider url="http://localhost:4000">
+      <ReduxProvider store={store}>
+        <App />
+      </ReduxProvider>
+    </FetchProvider>
   </React.StrictMode>
 );

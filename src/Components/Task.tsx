@@ -1,7 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../Redux/Store";
-import { changeStatus } from "../Redux/Tasks";
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { useFetch } from "use-http";
@@ -9,65 +6,49 @@ import { useFetch } from "use-http";
 const Task = ({
   text,
   id,
-  complate,
+  complete,
 }: {
   text: string;
   id: string;
-  complate: boolean;
+  complete: boolean;
 }) => {
-  const taskIdList = useSelector((state: RootState) => state.tasks.Id);
-  const IsComplateTask = useSelector(
-    (state: RootState) => state.tasks.IsComplate
-  );
-  const apiUrl = `http://localhost:4000/data/deleteTask`;
+  const { del, patch } = useFetch(`/data`);
+  const [iscomplete, setIsComplete] = useState(complete);
 
-  const options = {
-    method: "DELETE",
-  };
-
-  const { del, loading, error } = useFetch(apiUrl, options);
-
-  const handleDelete = async () => {
+  const deleteTask = async () => {
     try {
-      const response = await del(`${id}`);
-      console.log("Delete response:", response);
+      await del(`/deleteTask/${id}`);
     } catch (error) {
       console.error("Delete error:", error);
     }
-    window.location.reload();
   };
 
-  const isComplateById = (id: string) => {
-    const idIndex = taskIdList.indexOf(id);
-    const isComplate = IsComplateTask[idIndex];
-    return isComplate || complate;
-  };
-
-  const dispatch = useDispatch();
-
-  const complateTask = () => {
-    const index = taskIdList.findIndex((item) => item === id);
-    dispatch(changeStatus(index));
+  const completeTask = async () => {
+    try {
+      await patch(`/setStatus/${id}`, {
+        complete: !iscomplete,
+      });
+    } catch (error) {
+      console.error("Status error:", error);
+    }
+    setIsComplete(!iscomplete);
   };
 
   return (
     <div className="show-list">
       <div
         style={{ display: "flex", marginLeft: "10px", wordBreak: "break-all" }}
-        className={isComplateById(id) ? "strikethrough" : ""}
+        className={iscomplete ? "strikethrough" : ""}
       >
         {text}
       </div>
 
       <div className={"marginLeft"}>
-        <Checkbox
-          checked={isComplateById(id)}
-          onChange={complateTask}
-        ></Checkbox>
+        <Checkbox onChange={completeTask} checked={iscomplete}></Checkbox>
       </div>
 
       <div className="sixty">
-        <Delete onClick={handleDelete} />
+        <Delete onClick={deleteTask} />
       </div>
     </div>
   );

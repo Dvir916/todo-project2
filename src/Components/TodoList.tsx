@@ -1,20 +1,31 @@
 import Task from "./Task";
 import "../App.css";
-import React from "react";
-import useFetch from "../API/useFetch";
+import React, { useEffect, useState } from "react";
+import { useFetch } from "use-http";
 
-const apiUrl = `http://localhost:4000/data/all`;
 const TodoList = () => {
-  const { data, loading, error } = useFetch(apiUrl);
+  const { data, loading, error } = useFetch(`/data/all`, {}, []);
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      setTasks(data);
+    }
+  }, [data]);
 
   if (loading) {
     return <div>loading...</div>;
   }
-  const dataArray = JSON.parse(data.toString());
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+  if (!data) {
+    return <div>No data available</div>;
+  }
 
   return (
     <div className="eityperc">
-      {dataArray.map(
+      {data?.map(
         (
           item: { text: string; id: string; isComplete: boolean },
           index: React.Key
@@ -23,7 +34,7 @@ const TodoList = () => {
             key={index}
             text={item.text}
             id={item.id}
-            complate={item.isComplete}
+            complete={item.isComplete}
           />
         )
       )}
