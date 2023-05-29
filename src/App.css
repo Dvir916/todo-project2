@@ -24,16 +24,16 @@
 }
 
 .button {
-  border-radius: 3px;
+  border-radius: 5px;
   transition: background .2s linear;
   background: #00B288;
   height: 31.5px;
   width: 100px;
-  &:after {
+  &:after{ 
     position: absolute;
     background: rgba(black, .2);
     transform: scale(0);
-    height: 50px;
+    height: 500px;
     width: 50px;
     margin-left: auto;
     margin-right: auto;
@@ -44,9 +44,8 @@
     left: 0;
     right: 0;
     z-index: 2;
-    content: '';
     border-radius: 50%;
-  }
+}
   &:not(:active) {
     &:after {
         animation: ripple .4s cubic-bezier(0.785, 0.135, 0.15, 0.86);

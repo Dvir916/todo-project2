@@ -3,24 +3,25 @@ import "../App.css";
 import { insertTaskList } from "../Redux/Tasks";
 import { useState } from "react";
 import React from "react";
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
 
 const AddTodo = () => {
   const dispatch = useDispatch();
-  const [task, setTask] = useState("");
+  const [tasksText, setTasksText] = useState("");
 
-  const textHandle = (value: string) => {
-    setTask(value);
+  const textHandle = (text: string) => {
+    setTasksText(text);
   };
 
   const addTask = (e: { preventDefault: () => void }) => {
     e.preventDefault();
-    if (task.length > 0) {
-      dispatch(insertTaskList(task));
-      setTask("");
+    if (tasksText.length > 0) {
+      dispatch(insertTaskList(tasksText));
+      setTasksText("");
     } else {
-      window.alert("the task most contain text!");
+      window.alert("the task must contain text!");
     }
-    // alertify.message("the task most contain text!");
   };
 
   return (
@@ -30,17 +31,14 @@ const AddTodo = () => {
           type="text"
           className="form__input"
           placeholder="Insert your task here:"
-          value={task}
+          value={tasksText}
           onChange={(e) => textHandle(e.target.value)}
         />
         <label className="form__label">Task</label>
       </div>
-      <input
-        className="button"
-        type="submit"
-        placeholder="SEND"
-        onClick={addTask}
-      />
+      <button className="button" onClick={addTask}>
+        SEND
+      </button>
     </div>
   );
 };

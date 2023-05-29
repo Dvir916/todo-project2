@@ -5,13 +5,12 @@ import "../App.css";
 import React from "react";
 
 const TodoList = () => {
-  const taskTextList = useSelector((state: RootState) => state.tasks.TaskList);
-  const taskIdList = useSelector((state: RootState) => state.tasks.Id);
+  const tasksArray = useSelector((state: RootState) => state.tasks);
 
   return (
     <div className="eityperc">
-      {taskTextList.map((item, index) => (
-        <Task text={item} id={taskIdList[index]} />
+      {tasksArray.map((item, index) => (
+        <Task text={item.TaskList} index={index} />
       ))}
     </div>
   );

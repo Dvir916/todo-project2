@@ -1,40 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { tasks } from "../interfaceTyps";
 
-interface tasks {
-  TaskList: string[];
-  Id: string[];
-  IsComplate: boolean[];
-}
-
-const initialState: tasks = {
-  TaskList: [],
-  Id: [],
-  IsComplate: [],
-};
+const initialState: tasks[] = [];
 
 export const tasksSlice = createSlice({
   name: "task",
   initialState,
   reducers: {
     insertTaskList: (state, action: PayloadAction<string>) => {
-      state.TaskList.push(action.payload);
-      state.Id.push(Math.random().toString(36).substr(2, 8));
-      state.IsComplate.push(false);
+      state.push({
+        TaskList: action.payload,
+        Id: Math.random().toString(36).substr(2, 8),
+        IsComplate: false,
+      });
     },
 
     earseTaskFromList: (state, action: PayloadAction<number>) => {
-      state.TaskList = state.TaskList.filter(
-        (item, index) => index !== action.payload
-      );
-      state.Id = state.Id.filter((item, index) => index !== action.payload);
-      state.IsComplate = state.IsComplate.filter(
-        (item, index) => index !== action.payload
-      );
+      state.splice(action.payload, 1);
     },
 
     changeStatus: (state, action: PayloadAction<number>) => {
-      state.IsComplate[action.payload] = true;
+      state[action.payload].IsComplate = !state[action.payload].IsComplate;
     },
   },
 });
