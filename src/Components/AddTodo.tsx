@@ -1,45 +1,44 @@
 import { useDispatch } from "react-redux/es/exports";
 import "../App.css";
-import { insertTaskList } from "../Redux/Tasks";
+import { insertTask } from "../Redux/Tasks";
 import { useState } from "react";
 import React from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
+import { Box, Button, TextField } from "@mui/material";
 
 const AddTodo = () => {
   const dispatch = useDispatch();
   const [tasksText, setTasksText] = useState("");
 
-  const textHandle = (text: string) => {
-    setTasksText(text);
-  };
-
-  const addTask = (e: { preventDefault: () => void }) => {
+  const addTask = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (tasksText.length > 0) {
-      dispatch(insertTaskList(tasksText));
+      dispatch(insertTask(tasksText));
+      alertify.success("Task was Inserted successfully!");
       setTasksText("");
     } else {
-      window.alert("the task must contain text!");
+      alertify.alert("Error:", "the task must contain text!", function () {
+        alertify.warning("Please enter your task");
+      });
     }
   };
 
   return (
-    <div style={{ display: "flex", marginTop: "5%" }}>
-      <div>
-        <input
+    <Box sx={{ display: "flex", marginTop: "5%" }}>
+      <Box>
+        <TextField
           type="text"
-          className="form__input"
           placeholder="Insert your task here:"
           value={tasksText}
-          onChange={(e) => textHandle(e.target.value)}
+          onChange={(e) => setTasksText(e.target.value)}
+          label="Task:"
         />
-        <label className="form__label">Task</label>
-      </div>
-      <button className="button" onClick={addTask}>
+      </Box>
+      <Button onClick={addTask} variant="contained">
         SEND
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 };
 export default AddTodo;

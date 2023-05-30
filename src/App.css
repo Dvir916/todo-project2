@@ -15,7 +15,7 @@
 
 .App-header {
   /* background-color: #ADD8E6; */
-  background: linear-gradient(to bottom, #ADD8E6, #90EE90);
+  background: linear-gradient(to bottom, #add8e6, #90ee90);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -25,13 +25,13 @@
 
 .button {
   border-radius: 5px;
-  transition: background .2s linear;
-  background: #00B288;
+  transition: background 0.2s linear;
+  background: #00b288;
   height: 31.5px;
   width: 100px;
-  &:after{ 
+  &:after {
     position: absolute;
-    background: rgba(black, .2);
+    background: rgba(black, 0.2);
     transform: scale(0);
     height: 500px;
     width: 50px;
@@ -45,12 +45,12 @@
     right: 0;
     z-index: 2;
     border-radius: 50%;
-}
+  }
   &:not(:active) {
     &:after {
-        animation: ripple .4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+      animation: ripple 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
     }
-    background: darken(#00B288, 5%);
+    background: darken(#00b288, 5%);
   }
 }
 
@@ -67,7 +67,7 @@
   }
 }
 
-.text-area{
+.text-area {
   margin-top: 15%;
   height: 25px;
   width: 250px;
@@ -75,10 +75,10 @@
 
 .strikethrough {
   text-decoration: line-through;
-  color: #C5C5C5;
+  color: #c5c5c5;
 }
 
-.show-list{
+.show-list {
   background-color: #b4e9f7;
   height: 60px;
   display: flex;
@@ -87,24 +87,23 @@
   overflow: auto;
 }
 
-.delete-task-button{
-  text-align:right
+.delete-task-button {
+  text-align: right;
 }
 
-
-.eityperc{
+.eityperc {
   width: 80%;
   overflow: auto;
 }
 
-.marginLeft{
+.marginLeft {
   margin-left: auto;
   width: 60px;
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.sixty{
+.sixty {
   width: 60px;
   margin-top: auto;
   margin-bottom: auto;
@@ -112,7 +111,7 @@
 }
 
 .form__label {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1.2rem;
   margin-left: 2rem;
   margin-top: 0.7rem;
@@ -123,7 +122,6 @@
 }
 
 .form__input {
-
   border-radius: 0.2rem;
   background-color: rgb(255, 255, 255);
   border: none;
@@ -138,4 +136,3 @@
   -webkit-transform: translateY(-4rem);
   transform: translateY(-4rem);
 }
-

@@ -3,16 +3,17 @@ import { RootState } from "../Redux/Store";
 import Task from "./Task";
 import "../App.css";
 import React from "react";
+import { Box } from "@mui/material";
 
 const TodoList = () => {
   const tasksArray = useSelector((state: RootState) => state.tasks);
 
   return (
-    <div className="eityperc">
+    <Box className="eityperc">
       {tasksArray.map((item, index) => (
-        <Task text={item.TaskList} index={index} />
+        <Task text={item.taskText} index={index} />
       ))}
-    </div>
+    </Box>
   );
 };
 export default TodoList;
