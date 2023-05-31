@@ -18,7 +18,7 @@ const AddTodo = () => {
       alertify.success("Task was Inserted successfully!");
       setTasksText("");
     } else {
-      alertify.alert("Error:", "the task must contain text!", function () {
+      alertify.alert("Error:", "the task must contain text!", () => {
         alertify.warning("Please enter your task");
       });
     }
