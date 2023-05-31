@@ -1,8 +1,6 @@
-import { useDispatch } from "react-redux/es/exports";
-import "../App.css";
-import { insertTask } from "../Redux/Tasks";
+import { useDispatch } from "react-redux";
+import { insertTask } from "../Redux/TaskSline";
 import { useState } from "react";
-import React from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
@@ -10,7 +8,7 @@ import useFetch from "use-http";
 
 const AddTodo = () => {
   const dispatch = useDispatch();
-  const [tasksText, setTasksText] = useState("");
+  const [taskText, setTaskText] = useState("");
 
   const { get, post, error, loading } = useFetch();
 
@@ -25,20 +23,20 @@ const AddTodo = () => {
   const addTask = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     let lastId: number | undefined;
-    if (tasksText.length > 0) {
+    if (taskText.length > 0) {
       try {
-        post("/data/addTask", { text: tasksText });
+        post("/data/addTask", { text: taskText });
         lastId = await get("/data/lastID");
       } catch (error) {
         console.error(error);
       }
       if (lastId) {
-        dispatch(insertTask({ text: tasksText, id: lastId }));
+        dispatch(insertTask({ text: taskText, id: lastId }));
         alertify.success("Task was Inserted successfully!");
-        setTasksText("");
+        setTaskText("");
       }
     } else {
-      alertify.alert("Error:", "the task must contain text!", function () {
+      alertify.alert("Error:", "the task must contain text!", () => {
         alertify.warning("Please enter your task");
       });
     }
@@ -50,8 +48,8 @@ const AddTodo = () => {
         <TextField
           type="text"
           placeholder="Insert your task here:"
-          value={tasksText}
-          onChange={(e) => setTasksText(e.target.value)}
+          value={taskText}
+          onChange={(e) => setTaskText(e.target.value)}
           label="Task:"
         />
       </Box>
