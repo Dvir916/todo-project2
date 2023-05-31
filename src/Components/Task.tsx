@@ -1,50 +1,84 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../Redux/Store";
-import { changeStatus, earseTaskFromList } from "../Redux/Tasks";
-import React from "react";
-import { Checkbox, Box } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSline";
+import { Checkbox, Box, styled } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { Task } from "../interfaceTypes";
+
+const strikethrough = styled(Box)({
+  textDecoration: "line-through",
+  color: "#c5c5c5",
+  display: "flex",
+  marginLeft: "10px",
+  wordBreak: "break-all",
+  marginTop: "auto",
+  marginBottom: "auto",
+});
+
+const listDesign = styled(Box)({
+  backgroundColor: "#b4e9f7",
+  height: "60px",
+  display: "flex",
+  marginTop: "20px",
+  fontSize: "30px",
+  overflow: "auto",
+});
+
+const checkBoxDesign = styled(Box)({
+  marginLeft: "auto",
+  width: "60px",
+  marginTop: "auto",
+  marginBottom: "auto",
+});
+
+const deleteButtonDesign = styled(Box)({
+  width: "60px",
+  marginTop: "auto",
+  marginBottom: "auto",
+  color: "rgb(255, 0, 0)",
+});
+
+const textDesign = styled(Box)({
+  display: "flex",
+  marginLeft: "10px",
+  wordBreak: "break-all",
+  marginTop: "auto",
+  marginBottom: "auto",
+});
 
 interface TaskProps {
-  text: string;
-  index: number;
+  task: Task;
 }
 
-const Task: React.FC<TaskProps> = ({ text, index }) => {
-  const tasksArray = useSelector((state: RootState) => state.tasks);
+const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const dispatch = useDispatch();
 
-  const isComplateByIndex = () => {
-    return tasksArray[index].isComplate;
+  const isCompleteByIndex = () => {
+    return task.isComplete;
   };
 
   const deleteTask = () => {
-    if (index !== -1) {
-      dispatch(earseTaskFromList(index));
-    }
+    console.log(task.id);
+    dispatch(eraseTaskFromList(task.id));
   };
 
   const completeTask = () => {
-    dispatch(changeStatus(index));
+    dispatch(toggleStatus(task.id));
   };
 
   return (
-    <Box className="show-list">
-      <Box
-        sx={{ display: "flex", marginLeft: "10px", wordBreak: "break-all" }}
-        className={isComplateByIndex() ? "strikethrough" : ""}
-      >
-        {text}
+    <Box component={listDesign}>
+      <Box component={isCompleteByIndex() ? strikethrough : textDesign}>
+        {task.taskText}
       </Box>
 
-      <Box className={"marginLeft"}>
-        <Checkbox checked={isComplateByIndex()} onChange={completeTask} />
+      <Box component={checkBoxDesign}>
+        <Checkbox checked={isCompleteByIndex()} onChange={completeTask} />
       </Box>
 
-      <Box className="sixty">
+      <Box component={deleteButtonDesign}>
         <Delete onClick={deleteTask} />
       </Box>
     </Box>
   );
 };
-export default Task;
+export default TaskItem;
