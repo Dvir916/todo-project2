@@ -1,5 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import tasksReducer from './Tasks';
+import { configureStore } from "@reduxjs/toolkit";
+import tasksReducer from "./Tasks";
+import React from "react";
+import { Provider } from "react-redux";
+import ReactDOM from "react-dom";
+import InitializeData from "../Components/InitializeData";
 
 export const store = configureStore({
   reducer: {
@@ -7,7 +11,10 @@ export const store = configureStore({
   },
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
+ReactDOM.render(
+  <Provider store={store}>
+    <InitializeData />
+  </Provider>,
+  document.getElementById("root")
+);
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-export type AppDispatch = typeof store.dispatch;

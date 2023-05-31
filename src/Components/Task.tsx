@@ -4,41 +4,52 @@ import { changeStatus, earseTaskFromList } from "../Redux/Tasks";
 import React from "react";
 import { Checkbox, Box } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import useFetch from "use-http";
+import { Tasks } from "../interfaceTypes";
 
-interface TaskProps {
-  text: string;
-  index: number;
-}
-
-const Task: React.FC<TaskProps> = ({ text, index }) => {
+const Task: React.FC<Tasks> = ({ text, id, isComplete }) => {
   const tasksArray = useSelector((state: RootState) => state.tasks);
   const dispatch = useDispatch();
 
-  const isComplateByIndex = () => {
-    return tasksArray[index].isComplate;
+  const { del, patch } = useFetch(`/data`);
+
+  const isComplateById = () => {
+    return tasksArray[tasksArray.findIndex((item) => item.id === id)]
+      .isComplete;
   };
 
   const deleteTask = () => {
-    if (index !== -1) {
-      dispatch(earseTaskFromList(index));
+    try {
+      console.log(id);
+      del(`/deleteTask/${id}`);
+      dispatch(earseTaskFromList(id));
+    } catch (error) {
+      console.error("Delete error:", error);
     }
   };
 
   const completeTask = () => {
-    dispatch(changeStatus(index));
+    try {
+      patch(`/setStatus/${id}`, {
+        complete: !isComplete,
+      });
+      dispatch(changeStatus(id));
+    } catch (error) {
+      console.error("Status error:", error);
+    }
   };
 
   return (
     <Box className="show-list">
       <Box
         sx={{ display: "flex", marginLeft: "10px", wordBreak: "break-all" }}
-        className={isComplateByIndex() ? "strikethrough" : ""}
+        className={isComplateById() ? "strikethrough" : ""}
       >
         {text}
       </Box>
 
       <Box className={"marginLeft"}>
-        <Checkbox checked={isComplateByIndex()} onChange={completeTask} />
+        <Checkbox checked={isComplateById()} onChange={completeTask} />
       </Box>
 
       <Box className="sixty">

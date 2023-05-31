@@ -10,8 +10,8 @@ const TodoList = () => {
 
   return (
     <Box className="eityperc">
-      {tasksArray.map((item, index) => (
-        <Task text={item.taskText} index={index} />
+      {tasksArray.map((item) => (
+        <Task text={item.text} id={item.id} isComplete={item.isComplete} />
       ))}
     </Box>
   );

@@ -6,17 +6,37 @@ import React from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
+import useFetch from "use-http";
 
 const AddTodo = () => {
   const dispatch = useDispatch();
   const [tasksText, setTasksText] = useState("");
 
-  const addTask = (e: React.MouseEvent<HTMLElement>) => {
+  const { get, post, error, loading } = useFetch();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  const addTask = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
+    let lastId: number | undefined;
     if (tasksText.length > 0) {
-      dispatch(insertTask(tasksText));
-      alertify.success("Task was Inserted successfully!");
-      setTasksText("");
+      try {
+        post("/data/addTask", { text: tasksText });
+        lastId = await get("/data/lastID");
+      } catch (error) {
+        console.error(error);
+      }
+      if (lastId) {
+        dispatch(insertTask({ text: tasksText, id: lastId }));
+        alertify.success("Task was Inserted successfully!");
+        setTasksText("");
+      }
     } else {
       alertify.alert("Error:", "the task must contain text!", function () {
         alertify.warning("Please enter your task");
