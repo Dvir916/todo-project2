@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSline";
-import { Checkbox, Box, styled } from "@mui/material";
+import { Checkbox, Box, styled, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Tasks } from "../interfaceTypes";
 import { useFetch } from "use-http";
@@ -93,7 +93,9 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
       </Box>
 
       <Box component={deleteButtonDesign}>
-        <Delete onClick={deleteTask} />
+        <IconButton onClick={deleteTask} sx={{ color: "red" }}>
+          <Delete />
+        </IconButton>
       </Box>
     </Box>
   );
