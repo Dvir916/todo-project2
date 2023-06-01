@@ -17,10 +17,7 @@ export const tasksSlice = createSlice({
     },
 
     eraseTaskFromList: (state, action: PayloadAction<number>) => {
-      state.splice(
-        state.findIndex((item) => item.id === action.payload),
-        1
-      );
+      return state.filter((item) => item.id !== action.payload);
     },
 
     toggleStatus: (state, action: PayloadAction<number>) => {

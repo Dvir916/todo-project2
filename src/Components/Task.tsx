@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSline";
+import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSlice";
 import { Checkbox, Box, styled } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Task } from "../interfaceTypes";
@@ -14,7 +14,7 @@ const strikethrough = styled(Box)({
   marginBottom: "auto",
 });
 
-const listDesign = styled(Box)({
+const ListDesign = styled(Box)({
   backgroundColor: "#b4e9f7",
   height: "60px",
   display: "flex",
@@ -23,14 +23,14 @@ const listDesign = styled(Box)({
   overflow: "auto",
 });
 
-const checkBoxDesign = styled(Box)({
+const CheckBoxDesign = styled(Box)({
   marginLeft: "auto",
   width: "60px",
   marginTop: "auto",
   marginBottom: "auto",
 });
 
-const deleteButtonDesign = styled(Box)({
+const DeleteButtonDesign = styled(Box)({
   width: "60px",
   marginTop: "auto",
   marginBottom: "auto",
@@ -57,7 +57,6 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
   };
 
   const deleteTask = () => {
-    console.log(task.id);
     dispatch(eraseTaskFromList(task.id));
   };
 
@@ -66,19 +65,19 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
   };
 
   return (
-    <Box component={listDesign}>
+    <ListDesign>
       <Box component={isCompleteByIndex() ? strikethrough : textDesign}>
         {task.taskText}
       </Box>
 
-      <Box component={checkBoxDesign}>
+      <CheckBoxDesign>
         <Checkbox checked={isCompleteByIndex()} onChange={completeTask} />
-      </Box>
+      </CheckBoxDesign>
 
-      <Box component={deleteButtonDesign}>
+      <DeleteButtonDesign>
         <Delete onClick={deleteTask} />
-      </Box>
-    </Box>
+      </DeleteButtonDesign>
+    </ListDesign>
   );
 };
 export default TaskItem;

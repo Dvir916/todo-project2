@@ -9,7 +9,7 @@ const TodoList = () => {
   return (
     <Box sx={{ width: "80%", overflow: "auto" }}>
       {tasks.map((item) => (
-        <Task task={item} />
+        <Task task={item} key={item.id} />
       ))}
     </Box>
   );
