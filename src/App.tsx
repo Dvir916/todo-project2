@@ -1,4 +1,5 @@
 import AddTodo from "./Components/AddTodo";
+import DBDataInitializer from "./Components/InitializeData";
 import TodoList from "./Components/TodoList";
 import { Box, styled } from "@mui/material";
 
@@ -13,14 +14,15 @@ const AppHeader = styled(Box)({
 
 function App() {
   return (
-    <div>
-      <div className="App">
+    <Box>
+      <Box>
         <AppHeader>
+          <DBDataInitializer />
           <AddTodo />
           <TodoList />
         </AppHeader>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 }
 

@@ -3,6 +3,7 @@ import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSline";
 import { Checkbox, Box, styled } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Tasks } from "../interfaceTypes";
+import { useFetch } from "use-http";
 
 const strikethrough = styled(Box)({
   textDecoration: "line-through",
@@ -51,28 +52,44 @@ interface TaskProps {
 
 const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const dispatch = useDispatch();
+  const { patch, loading, error, del } = useFetch();
 
-  const isCompleteByIndex = () => {
-    return task.isComplete;
-  };
+  if (loading) {
+    return <Box>loading...</Box>;
+  }
+  if (error) {
+    return <Box>Error: {error.message}</Box>;
+  }
 
-  const deleteTask = () => {
-    console.log(task.id);
+  const deleteTask = async () => {
+    try {
+      await del(`/deleteTask/${task.id}`);
+    } catch (error) {
+      console.error("Delete error:", error);
+    }
     dispatch(eraseTaskFromList(task.id));
   };
 
   const completeTask = () => {
-    dispatch(toggleStatus(task.id));
+    try {
+      patch(`/setStatus`, {
+        complete: !task.isComplete,
+        id: task.id,
+      });
+      dispatch(toggleStatus(task.id));
+    } catch (error) {
+      console.error("Status error:", error);
+    }
   };
 
   return (
     <Box component={listDesign}>
-      <Box component={isCompleteByIndex() ? strikethrough : textDesign}>
+      <Box component={task.isComplete ? strikethrough : textDesign}>
         {task.text}
       </Box>
 
       <Box component={checkBoxDesign}>
-        <Checkbox checked={isCompleteByIndex()} onChange={completeTask} />
+        <Checkbox checked={task.isComplete} onChange={completeTask} />
       </Box>
 
       <Box component={deleteButtonDesign}>
