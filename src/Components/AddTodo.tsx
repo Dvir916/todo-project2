@@ -13,11 +13,11 @@ const AddTodo = () => {
   const { get, post, error, loading } = useFetch();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Box>Loading...</Box>;
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <Box>Error: {error.message}</Box>;
   }
 
   const addTask = async (e: React.MouseEvent<HTMLElement>) => {
@@ -50,7 +50,7 @@ const AddTodo = () => {
           placeholder="Insert your task here:"
           value={taskText}
           onChange={(e) => setTaskText(e.target.value)}
-          label="Task:"
+          label="Task"
         />
       </Box>
       <Button onClick={addTask} variant="contained">

@@ -4,6 +4,8 @@ import { Checkbox, Box, styled, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Tasks } from "../interfaceTypes";
 import { useFetch } from "use-http";
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
 
 const strikethrough = styled(Box)({
   textDecoration: "line-through",
@@ -15,7 +17,7 @@ const strikethrough = styled(Box)({
   marginBottom: "auto",
 });
 
-const listDesign = styled(Box)({
+const ListDesign = styled(Box)({
   backgroundColor: "#b4e9f7",
   height: "60px",
   display: "flex",
@@ -24,14 +26,14 @@ const listDesign = styled(Box)({
   overflow: "auto",
 });
 
-const checkBoxDesign = styled(Box)({
+const CheckBoxDesign = styled(Box)({
   marginLeft: "auto",
   width: "60px",
   marginTop: "auto",
   marginBottom: "auto",
 });
 
-const deleteButtonDesign = styled(Box)({
+const DeleteButtonDesign = styled(Box)({
   width: "60px",
   marginTop: "auto",
   marginBottom: "auto",
@@ -52,7 +54,7 @@ interface TaskProps {
 
 const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const dispatch = useDispatch();
-  const { patch, loading, error, del } = useFetch();
+  const { patch, response, del, loading, error } = useFetch();
 
   if (loading) {
     return <Box>loading...</Box>;
@@ -64,40 +66,51 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const deleteTask = async () => {
     try {
       await del(`/deleteTask/${task.id}`);
+      if (response.ok) {
+        dispatch(eraseTaskFromList(task.id));
+        alertify.message("task was successfully deleted!");
+      } else {
+        console.log("Error: ", response.status, response.statusText);
+        alertify.error(`task cannot be deleted. try again later`);
+      }
     } catch (error) {
       console.error("Delete error:", error);
     }
-    dispatch(eraseTaskFromList(task.id));
   };
 
-  const completeTask = () => {
+  const completeTask = async () => {
     try {
-      patch(`/setStatus`, {
+      await patch(`/setStatus`, {
         complete: !task.isComplete,
         id: task.id,
       });
-      dispatch(toggleStatus(task.id));
+      if (response.ok) {
+        dispatch(toggleStatus(task.id));
+      } else {
+        console.log("Error: ", response.status, response.statusText);
+        alertify.error(`task cannot be toggled. try again later`);
+      }
     } catch (error) {
       console.error("Status error:", error);
     }
   };
 
   return (
-    <Box component={listDesign}>
+    <ListDesign>
       <Box component={task.isComplete ? strikethrough : textDesign}>
         {task.text}
       </Box>
 
-      <Box component={checkBoxDesign}>
+      <CheckBoxDesign>
         <Checkbox checked={task.isComplete} onChange={completeTask} />
-      </Box>
+      </CheckBoxDesign>
 
-      <Box component={deleteButtonDesign}>
+      <DeleteButtonDesign>
         <IconButton onClick={deleteTask} sx={{ color: "red" }}>
           <Delete />
         </IconButton>
-      </Box>
-    </Box>
+      </DeleteButtonDesign>
+    </ListDesign>
   );
 };
 export default TaskItem;

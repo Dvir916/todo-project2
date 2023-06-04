@@ -2,31 +2,30 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import useFetch from "use-http";
 import { insertDataFromDB } from "../Redux/TaskSline";
+import { Box } from "@mui/material";
 
 const DBDataInitializer = () => {
   const dispatch = useDispatch();
   const { get, data, loading, error } = useFetch("/all", {}, []);
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const getAllTasks = async () => {
       try {
-        const dataDB = await get();
-        dispatch(insertDataFromDB(dataDB));
+        const DBdata = await get();
+        dispatch(insertDataFromDB(DBdata));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchTasks();
+    getAllTasks();
   }, [data, loading]);
 
-  // const tasks = useSelector((state: RootState) => state.tasks);
-
   if (loading) {
-    return <div>Loading...</div>;
+    return <Box>Loading...</Box>;
   }
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <Box>Error: {error.message}</Box>;
   }
 
   return null;
