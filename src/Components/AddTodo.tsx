@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { insertTask } from "../Redux/TaskSline";
+import { insertTask } from "../Redux/TaskSlice";
 import { useState } from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";

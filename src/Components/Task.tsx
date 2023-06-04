@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSline";
+import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSlice";
 import { Checkbox, Box, styled, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Tasks } from "../interfaceTypes";
