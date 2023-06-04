@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import useFetch from "use-http";
-import { insertDataFromDB } from "../Redux/TaskSline";
+import { insertDataFromDB } from "../Redux/TaskSlice";
 import { Box } from "@mui/material";
 
 const DBDataInitializer = () => {
