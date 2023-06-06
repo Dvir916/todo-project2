@@ -25,7 +25,7 @@ const AddTodo = () => {
     let lastId: number | undefined;
     if (taskText.length > 0) {
       try {
-        post("addTask", { text: taskText });
+        post("Tasks", { text: taskText });
         lastId = await get("/lastID");
       } catch (error) {
         console.error(error);

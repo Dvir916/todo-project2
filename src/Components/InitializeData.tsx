@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 
 const DBDataInitializer = () => {
   const dispatch = useDispatch();
-  const { get, data, loading, error } = useFetch("/all", {}, []);
+  const { get, data, loading, error } = useFetch("/Tasks", {}, []);
 
   useEffect(() => {
     const getAllTasks = async () => {

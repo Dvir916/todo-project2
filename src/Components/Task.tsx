@@ -65,7 +65,7 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   const deleteTask = async () => {
     try {
-      await del(`/deleteTask/${task.id}`);
+      await del(`/Tasks/${task.id}`);
       if (response.ok) {
         dispatch(eraseTaskFromList(task.id));
         alertify.message("task was successfully deleted!");
@@ -80,7 +80,7 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   const completeTask = async () => {
     try {
-      await patch(`/setStatus`, {
+      await patch(`/Statuses`, {
         complete: !task.isComplete,
         id: task.id,
       });
