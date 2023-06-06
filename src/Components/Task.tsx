@@ -4,7 +4,7 @@ import { Checkbox, Box, styled } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Task } from "../interfaceTypes";
 
-const strikethrough = styled(Box)({
+const Strikethrough = styled(Box)({
   textDecoration: "line-through",
   color: "#c5c5c5",
   display: "flex",
@@ -37,7 +37,7 @@ const DeleteButtonDesign = styled(Box)({
   color: "rgb(255, 0, 0)",
 });
 
-const textDesign = styled(Box)({
+const TextDesign = styled(Box)({
   display: "flex",
   marginLeft: "10px",
   wordBreak: "break-all",
@@ -52,10 +52,6 @@ interface TaskProps {
 const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const dispatch = useDispatch();
 
-  const isCompleteByIndex = () => {
-    return task.isComplete;
-  };
-
   const deleteTask = () => {
     dispatch(eraseTaskFromList(task.id));
   };
@@ -66,12 +62,12 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   return (
     <ListDesign>
-      <Box component={isCompleteByIndex() ? strikethrough : textDesign}>
+      <Box component={task.isComplete ? Strikethrough : TextDesign}>
         {task.taskText}
       </Box>
 
       <CheckBoxDesign>
-        <Checkbox checked={isCompleteByIndex()} onChange={completeTask} />
+        <Checkbox checked={task.isComplete} onChange={completeTask} />
       </CheckBoxDesign>
 
       <DeleteButtonDesign>
