@@ -7,7 +7,7 @@ import { useFetch } from "use-http";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 
-const strikethrough = styled(Box)({
+const Strikethrough = styled(Box)({
   textDecoration: "line-through",
   color: "#c5c5c5",
   display: "flex",
@@ -40,7 +40,7 @@ const DeleteButtonDesign = styled(Box)({
   color: "rgb(255, 0, 0)",
 });
 
-const textDesign = styled(Box)({
+const TextDesign = styled(Box)({
   display: "flex",
   marginLeft: "10px",
   wordBreak: "break-all",
@@ -97,7 +97,7 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   return (
     <ListDesign>
-      <Box component={task.isComplete ? strikethrough : textDesign}>
+      <Box component={task.isComplete ? Strikethrough : TextDesign}>
         {task.text}
       </Box>
 
