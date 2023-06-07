@@ -29,7 +29,7 @@ const AddTodo = () => {
       } catch (error) {
         console.error(error);
       }
-      if (lastId) {
+      if (lastId !== undefined) {
         dispatch(insertTask({ text: taskText, id: lastId }));
         alertify.success("Task was Inserted successfully!");
         setTaskText("");

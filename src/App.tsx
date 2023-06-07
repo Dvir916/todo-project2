@@ -18,7 +18,7 @@ const AppHeader = styled(Box)({
 
 function App() {
   const dispatch = useDispatch();
-  const { get, data, loading } = useFetch<Task[]>("/tasks", {}, []);
+  const { get, loading } = useFetch<Task[]>("/tasks");
 
   useEffect(() => {
     const getAllTasks = async () => {
@@ -30,7 +30,9 @@ function App() {
       }
     };
     getAllTasks();
-  }, [data, loading]);
+  }, []);
+
+  if (loading) return <>Loading...</>;
 
   return (
     <AppHeader>
