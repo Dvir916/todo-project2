@@ -10,7 +10,7 @@ const AddTodo = () => {
   const dispatch = useDispatch();
   const [taskText, setTaskText] = useState("");
 
-  const { post, error, loading } = useFetch<number>("tasks");
+  const { post, error, loading } = useFetch<number>("/tasks");
 
   if (loading) {
     return <Box>Loading...</Box>;
