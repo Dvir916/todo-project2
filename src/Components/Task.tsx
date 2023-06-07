@@ -80,9 +80,8 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   const completeTask = async () => {
     try {
-      await patch(`/statuses`, {
+      await patch(`/${task.id}`, {
         complete: !task.isComplete,
-        id: task.id,
       });
       if (response.ok) {
         dispatch(toggleStatus(task.id));
