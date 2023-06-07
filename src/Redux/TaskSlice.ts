@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Tasks } from "../interfaceTypes";
+import { Task } from "../interfaceTypes";
 
-const initialState: Tasks[] = [];
+const initialState: Task[] = [];
 
 export const tasksSlice = createSlice({
   name: "task",
@@ -28,7 +28,7 @@ export const tasksSlice = createSlice({
       state[index].isComplete = !state[index].isComplete;
     },
 
-    setTasks: (_state, action: PayloadAction<Tasks[]>) => {
+    setTasks: (_state, action: PayloadAction<Task[]>) => {
       return action.payload;
     },
   },

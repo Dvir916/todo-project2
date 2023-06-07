@@ -5,6 +5,7 @@ import { setTasks } from "./Redux/TaskSlice";
 import { useDispatch } from "react-redux";
 import useFetch from "use-http";
 import { useEffect } from "react";
+import { Task } from "./interfaceTypes";
 
 const AppHeader = styled(Box)({
   background: "linear-gradient(to bottom, #add8e6, #90ee90)",
@@ -17,7 +18,7 @@ const AppHeader = styled(Box)({
 
 function App() {
   const dispatch = useDispatch();
-  const { get, data, loading } = useFetch("/Tasks", {}, []);
+  const { get, data, loading } = useFetch<Task[]>("/Tasks", {}, []);
 
   useEffect(() => {
     const getAllTasks = async () => {

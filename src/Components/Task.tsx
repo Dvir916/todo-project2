@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSlice";
 import { Checkbox, Box, styled, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { Tasks } from "../interfaceTypes";
+import { Task } from "../interfaceTypes";
 import { useFetch } from "use-http";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
@@ -49,12 +49,12 @@ const TextDesign = styled(Box)({
 });
 
 interface TaskProps {
-  task: Tasks;
+  task: Task;
 }
 
 const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const dispatch = useDispatch();
-  const { patch, response, del, loading, error } = useFetch("/tasks");
+  const { patch, response, del, loading, error } = useFetch<string>("/tasks");
 
   if (loading) {
     return <Box>loading...</Box>;
