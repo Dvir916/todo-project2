@@ -10,7 +10,7 @@ const AddTodo = () => {
   const dispatch = useDispatch();
   const [taskText, setTaskText] = useState("");
 
-  const { get, post, error, loading } = useFetch();
+  const { post, error, loading } = useFetch("tasks");
 
   if (loading) {
     return <Box>Loading...</Box>;
@@ -25,8 +25,7 @@ const AddTodo = () => {
     let lastId: number | undefined;
     if (taskText.length > 0) {
       try {
-        post("Tasks", { text: taskText });
-        lastId = await get("/lastID");
+        lastId = await post({ text: taskText });
       } catch (error) {
         console.error(error);
       }

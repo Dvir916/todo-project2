@@ -54,7 +54,7 @@ interface TaskProps {
 
 const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const dispatch = useDispatch();
-  const { patch, response, del, loading, error } = useFetch();
+  const { patch, response, del, loading, error } = useFetch("/tasks");
 
   if (loading) {
     return <Box>loading...</Box>;
@@ -65,7 +65,7 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   const deleteTask = async () => {
     try {
-      await del(`/Tasks/${task.id}`);
+      await del(`/${task.id}`);
       if (response.ok) {
         dispatch(eraseTaskFromList(task.id));
         alertify.message("task was successfully deleted!");
@@ -80,7 +80,7 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   const completeTask = async () => {
     try {
-      await patch(`/Statuses`, {
+      await patch(`/statuses`, {
         complete: !task.isComplete,
         id: task.id,
       });

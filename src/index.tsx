@@ -11,7 +11,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <FetchProvider url="http://localhost:4000/Tasks">
+    <FetchProvider url="http://localhost:4000">
       <ReduxProvider store={store}>
         <App />
       </ReduxProvider>

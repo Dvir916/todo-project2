@@ -14,7 +14,7 @@ export const tasksSlice = createSlice({
     ) => {
       state.push({
         text: action.payload.text,
-        id: state.length + 1,
+        id: action.payload.id,
         isComplete: false,
       });
     },
@@ -28,15 +28,13 @@ export const tasksSlice = createSlice({
       state[index].isComplete = !state[index].isComplete;
     },
 
-    insertDataFromDB: (state, action: PayloadAction<Tasks[]>) => {
-      if (action.payload) {
-        return action.payload;
-      }
+    setTasks: (_state, action: PayloadAction<Tasks[]>) => {
+      return action.payload;
     },
   },
 });
 
-export const { insertTask, eraseTaskFromList, toggleStatus, insertDataFromDB } =
+export const { insertTask, eraseTaskFromList, toggleStatus, setTasks } =
   tasksSlice.actions;
 
 export default tasksSlice.reducer;
