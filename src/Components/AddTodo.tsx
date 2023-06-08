@@ -1,12 +1,16 @@
 import { useDispatch } from "react-redux";
 import { insertTask } from "../Redux/TaskSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
 import { gql, useMutation, useQuery } from "@apollo/client";
 
-const AddTodo = () => {
+interface fetchingData {
+  fetchData: any;
+}
+
+const AddTodo: React.FC<fetchingData> = ({ fetchData }) => {
   const MUTATION_INSERT_TASK = gql`
     mutation CreateTask($text: String) {
       createTask(text: $text) {
@@ -25,6 +29,7 @@ const AddTodo = () => {
 
   const dispatch = useDispatch();
   const [taskText, setTaskText] = useState("");
+  const [SHOULDRefetch, setSHOULDRefetch] = useState(true);
   const [insertNewTask, { data: insertTaskData }] = useMutation(
     MUTATION_INSERT_TASK,
     {
@@ -33,14 +38,19 @@ const AddTodo = () => {
   );
   const { data: lastIdData, refetch } = useQuery(QUERY_LAST_ID);
 
+  useEffect(() => {
+    fetchData();
+  }, [SHOULDRefetch]);
+
   const addTask = async (e: React.MouseEvent<HTMLElement>) => {
-    refetch();
     e.preventDefault();
     let lastId: number | undefined;
     if (taskText) {
       try {
         insertNewTask();
-        lastId = lastIdData;
+        setSHOULDRefetch(!SHOULDRefetch);
+        lastId = lastIdData + 1;
+        refetch();
       } catch (error) {
         console.error(error);
       }

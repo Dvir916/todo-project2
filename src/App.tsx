@@ -26,7 +26,7 @@ function App() {
     }
   `;
 
-  const { data } = useQuery(QUERY_ALL_TASKS);
+  const { data, refetch } = useQuery(QUERY_ALL_TASKS);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function App() {
 
   return (
     <AppHeader>
-      <AddTodo />
+      <AddTodo fetchData={refetch} />
       <TodoList />
     </AppHeader>
   );

@@ -1,11 +1,10 @@
-import { useDispatch } from "react-redux";
-import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSlice";
 import { Checkbox, Box, styled, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Task } from "../interfaceTypes";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { gql, useMutation } from "@apollo/client";
+import { useEffect, useState } from "react";
 
 const Strikethrough = styled(Box)({
   textDecoration: "line-through",
@@ -48,12 +47,17 @@ const TextDesign = styled(Box)({
   marginBottom: "auto",
 });
 
-interface TaskProps {
+interface fetchingData {
   task: Task;
+  fetchData: any;
 }
 
-const TaskItem: React.FC<TaskProps> = ({ task }) => {
-  const dispatch = useDispatch();
+const TaskItem: React.FC<fetchingData> = ({ task, fetchData }) => {
+  const [SHOULDRefetch, setSHOULDRefetch] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, [SHOULDRefetch]);
 
   const MUTATION_DELETE_TASK = gql`
     mutation DeleteTask($id: ID) {
@@ -78,7 +82,7 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const deleteTask = async () => {
     try {
       taskDelete();
-      dispatch(eraseTaskFromList(task.id));
+      setSHOULDRefetch(!SHOULDRefetch);
       alertify.message("task was successfully deleted!");
     } catch (error) {
       console.error("Delete error:", error);
@@ -88,7 +92,7 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const completeTask = async () => {
     try {
       taskToggleComplete();
-      dispatch(toggleStatus(task.id));
+      setSHOULDRefetch(!SHOULDRefetch);
     } catch (error) {
       console.error("Status error:", error);
     }
