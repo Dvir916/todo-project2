@@ -4,28 +4,43 @@ import { useState } from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
-import useFetch from "use-http";
+import { gql, useMutation, useQuery } from "@apollo/client";
 
 const AddTodo = () => {
+  const MUTATION_INSERT_TASK = gql`
+    mutation CreateTask($text: String) {
+      createTask(text: $text) {
+        id
+        text
+        isComplete
+      }
+    }
+  `;
+
+  const QUERY_LAST_ID = gql`
+    query LastId {
+      lastId
+    }
+  `;
+
   const dispatch = useDispatch();
   const [taskText, setTaskText] = useState("");
-
-  const { post, error, loading } = useFetch<number>("/tasks");
-
-  if (loading) {
-    return <Box>Loading...</Box>;
-  }
-
-  if (error) {
-    return <Box>Error: {error.message}</Box>;
-  }
+  const [insertNewTask, { data: insertTaskData }] = useMutation(
+    MUTATION_INSERT_TASK,
+    {
+      variables: { text: taskText },
+    }
+  );
+  const { data: lastIdData, refetch } = useQuery(QUERY_LAST_ID);
 
   const addTask = async (e: React.MouseEvent<HTMLElement>) => {
+    refetch();
     e.preventDefault();
     let lastId: number | undefined;
-    if (taskText.length > 0) {
+    if (taskText) {
       try {
-        lastId = await post({ text: taskText });
+        insertNewTask();
+        lastId = lastIdData;
       } catch (error) {
         console.error(error);
       }
@@ -40,6 +55,10 @@ const AddTodo = () => {
       });
     }
   };
+
+  if (insertTaskData) {
+    console.log(insertTaskData);
+  }
 
   return (
     <Box sx={{ display: "flex", marginTop: "5%" }}>

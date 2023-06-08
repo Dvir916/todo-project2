@@ -3,9 +3,8 @@ import TodoList from "./Components/TodoList";
 import { Box, styled } from "@mui/material";
 import { setTasks } from "./Redux/TaskSlice";
 import { useDispatch } from "react-redux";
-import useFetch from "use-http";
 import { useEffect } from "react";
-import { Task } from "./interfaceTypes";
+import { gql, useQuery } from "@apollo/client";
 
 const AppHeader = styled(Box)({
   background: "linear-gradient(to bottom, #add8e6, #90ee90)",
@@ -17,22 +16,24 @@ const AppHeader = styled(Box)({
 });
 
 function App() {
+  const QUERY_ALL_TASKS = gql`
+    query Tasks {
+      tasks {
+        id
+        text
+        isComplete
+      }
+    }
+  `;
+
+  const { data } = useQuery(QUERY_ALL_TASKS);
   const dispatch = useDispatch();
-  const { get, loading } = useFetch<Task[]>("/tasks");
 
   useEffect(() => {
-    const getAllTasks = async () => {
-      try {
-        const DBdata = await get();
-        dispatch(setTasks(DBdata));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    getAllTasks();
-  }, []);
-
-  if (loading) return <>Loading...</>;
+    if (data) {
+      dispatch(setTasks(data.tasks));
+    }
+  }, [data]);
 
   return (
     <AppHeader>

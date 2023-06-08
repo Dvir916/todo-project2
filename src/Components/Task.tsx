@@ -3,9 +3,9 @@ import { toggleStatus, eraseTaskFromList } from "../Redux/TaskSlice";
 import { Checkbox, Box, styled, IconButton } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Task } from "../interfaceTypes";
-import { useFetch } from "use-http";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
+import { gql, useMutation } from "@apollo/client";
 
 const Strikethrough = styled(Box)({
   textDecoration: "line-through",
@@ -54,25 +54,32 @@ interface TaskProps {
 
 const TaskItem: React.FC<TaskProps> = ({ task }) => {
   const dispatch = useDispatch();
-  const { patch, response, del, loading, error } = useFetch<string>("/tasks");
 
-  if (loading) {
-    return <Box>loading...</Box>;
-  }
-  if (error) {
-    return <Box>Error: {error.message}</Box>;
-  }
+  const MUTATION_DELETE_TASK = gql`
+    mutation DeleteTask($id: ID) {
+      deleteTask(id: $id)
+    }
+  `;
+
+  const MUTATION_TOGGLE_COMPLETE_TASK = gql`
+    mutation ToggleCompleteTask($id: ID, $isComplete: Boolean) {
+      toggleCompleteTask(id: $id, isComplete: $isComplete)
+    }
+  `;
+
+  const [taskDelete] = useMutation(MUTATION_DELETE_TASK, {
+    variables: { id: task.id },
+  });
+
+  const [taskToggleComplete] = useMutation(MUTATION_TOGGLE_COMPLETE_TASK, {
+    variables: { id: task.id, isComplete: !task.isComplete },
+  });
 
   const deleteTask = async () => {
     try {
-      await del(`/${task.id}`);
-      if (response.ok) {
-        dispatch(eraseTaskFromList(task.id));
-        alertify.message("task was successfully deleted!");
-      } else {
-        console.log("Error: ", response.status, response.statusText);
-        alertify.error(`task cannot be deleted. try again later`);
-      }
+      taskDelete();
+      dispatch(eraseTaskFromList(task.id));
+      alertify.message("task was successfully deleted!");
     } catch (error) {
       console.error("Delete error:", error);
     }
@@ -80,15 +87,8 @@ const TaskItem: React.FC<TaskProps> = ({ task }) => {
 
   const completeTask = async () => {
     try {
-      await patch(`/${task.id}`, {
-        isComplete: !task.isComplete,
-      });
-      if (response.ok) {
-        dispatch(toggleStatus(task.id));
-      } else {
-        console.log("Error: ", response.status, response.statusText);
-        alertify.error(`task cannot be toggled. try again later`);
-      }
+      taskToggleComplete();
+      dispatch(toggleStatus(task.id));
     } catch (error) {
       console.error("Status error:", error);
     }
