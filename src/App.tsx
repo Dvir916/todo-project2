@@ -1,9 +1,6 @@
 import AddTodo from "./Components/AddTodo";
 import TodoList from "./Components/TodoList";
 import { Box, styled } from "@mui/material";
-import { setTasks } from "./Redux/TaskSlice";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
 
 const AppHeader = styled(Box)({
@@ -26,19 +23,12 @@ function App() {
     }
   `;
 
-  const { data, refetch } = useQuery(QUERY_ALL_TASKS);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (data) {
-      dispatch(setTasks(data.tasks));
-    }
-  }, [data]);
+  const { data, loading, refetch } = useQuery(QUERY_ALL_TASKS);
 
   return (
     <AppHeader>
       <AddTodo fetchData={refetch} />
-      <TodoList />
+      {!loading && <TodoList tasks={data.tasks} refetch={refetch} />}
     </AppHeader>
   );
 }

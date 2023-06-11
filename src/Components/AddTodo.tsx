@@ -1,13 +1,11 @@
-import { useDispatch } from "react-redux";
-import { insertTask } from "../Redux/TaskSlice";
 import { useEffect, useState } from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 interface fetchingData {
-  fetchData: any;
+  fetchData: () => void;
 }
 
 const AddTodo: React.FC<fetchingData> = ({ fetchData }) => {
@@ -21,22 +19,11 @@ const AddTodo: React.FC<fetchingData> = ({ fetchData }) => {
     }
   `;
 
-  const QUERY_LAST_ID = gql`
-    query LastId {
-      lastId
-    }
-  `;
-
-  const dispatch = useDispatch();
   const [taskText, setTaskText] = useState("");
   const [SHOULDRefetch, setSHOULDRefetch] = useState(true);
-  const [insertNewTask, { data: insertTaskData }] = useMutation(
-    MUTATION_INSERT_TASK,
-    {
-      variables: { text: taskText },
-    }
-  );
-  const { data: lastIdData, refetch } = useQuery(QUERY_LAST_ID);
+  const [insertNewTask] = useMutation(MUTATION_INSERT_TASK, {
+    variables: { text: taskText },
+  });
 
   useEffect(() => {
     fetchData();
@@ -44,20 +31,14 @@ const AddTodo: React.FC<fetchingData> = ({ fetchData }) => {
 
   const addTask = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    let lastId: number | undefined;
     if (taskText) {
       try {
         insertNewTask();
         setSHOULDRefetch(!SHOULDRefetch);
-        lastId = lastIdData + 1;
-        refetch();
-      } catch (error) {
-        console.error(error);
-      }
-      if (lastId !== undefined) {
-        dispatch(insertTask({ text: taskText, id: lastId }));
         alertify.success("Task was Inserted successfully!");
         setTaskText("");
+      } catch (error) {
+        console.error(error);
       }
     } else {
       alertify.alert("Error:", "the task must contain text!", () => {
@@ -65,10 +46,6 @@ const AddTodo: React.FC<fetchingData> = ({ fetchData }) => {
       });
     }
   };
-
-  if (insertTaskData) {
-    console.log(insertTaskData);
-  }
 
   return (
     <Box sx={{ display: "flex", marginTop: "5%" }}>

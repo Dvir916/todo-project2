@@ -49,7 +49,7 @@ const TextDesign = styled(Box)({
 
 interface fetchingData {
   task: Task;
-  fetchData: any;
+  fetchData: () => void;
 }
 
 const TaskItem: React.FC<fetchingData> = ({ task, fetchData }) => {
