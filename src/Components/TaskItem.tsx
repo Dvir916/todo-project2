@@ -62,11 +62,11 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, refetchTasks }) => {
       }
     : {};
 
-  const [taskDelete, deleteSuccess] = useMutation(MUTATION_DELETE_TASK, {
+  const [taskDelete, deleteResult] = useMutation(MUTATION_DELETE_TASK, {
     variables: { id: task.id },
   });
 
-  const [taskToggleComplete, completeSuccess] = useMutation(
+  const [taskToggleComplete, completeResult] = useMutation(
     MUTATION_TOGGLE_COMPLETE_TASK,
     {
       variables: { id: task.id, isComplete: !task.isComplete },
@@ -74,17 +74,17 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, refetchTasks }) => {
   );
 
   useEffect(() => {
-    if (deleteSuccess.loading) {
+    if (deleteResult.loading) {
       refetchTasks();
       alertify.message("task was successfully deleted!");
     }
-  }, [deleteSuccess.loading]);
+  }, [deleteResult.loading]);
 
   useEffect(() => {
-    if (completeSuccess.loading) {
+    if (completeResult.loading) {
       refetchTasks();
     }
-  }, [completeSuccess.loading]);
+  }, [completeResult.loading]);
 
   return (
     <ListDesign>

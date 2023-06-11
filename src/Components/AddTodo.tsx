@@ -20,17 +20,17 @@ const MUTATION_INSERT_TASK = gql`
 
 const AddTodo: React.FC<AddTodoProps> = ({ refetchTasks }) => {
   const [taskText, setTaskText] = useState("");
-  const [insertNewTask, success] = useMutation(MUTATION_INSERT_TASK, {
+  const [insertNewTask, insertResult] = useMutation(MUTATION_INSERT_TASK, {
     variables: { text: taskText },
   });
 
   useEffect(() => {
-    if (success.loading) {
+    if (insertResult.loading) {
       refetchTasks();
       alertify.success("Task was Inserted successfully!");
       setTaskText("");
     }
-  }, [success.loading]);
+  }, [insertResult.loading]);
 
   const addTask = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
