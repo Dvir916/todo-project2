@@ -4,42 +4,38 @@ import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
 import { gql, useMutation } from "@apollo/client";
 
-interface propFetchingTasks {
+interface AddTodoProps {
   refetchTasks: () => void;
 }
 
-const AddTodo: React.FC<propFetchingTasks> = ({ refetchTasks }) => {
-  const MUTATION_INSERT_TASK = gql`
-    mutation CreateTask($text: String) {
-      createTask(text: $text) {
-        id
-        text
-        isComplete
-      }
+const MUTATION_INSERT_TASK = gql`
+  mutation CreateTask($text: String) {
+    createTask(text: $text) {
+      id
+      text
+      isComplete
     }
-  `;
+  }
+`;
 
+const AddTodo: React.FC<AddTodoProps> = ({ refetchTasks }) => {
   const [taskText, setTaskText] = useState("");
-  const [SHOULDRefetch, setSHOULDRefetch] = useState(true);
-  const [insertNewTask] = useMutation(MUTATION_INSERT_TASK, {
+  const [insertNewTask, success] = useMutation(MUTATION_INSERT_TASK, {
     variables: { text: taskText },
   });
 
   useEffect(() => {
-    refetchTasks();
-  }, [SHOULDRefetch]);
+    if (success.loading) {
+      refetchTasks();
+      alertify.success("Task was Inserted successfully!");
+      setTaskText("");
+    }
+  }, [success.loading]);
 
-  const addTask = async (e: React.MouseEvent<HTMLElement>) => {
+  const addTask = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
     if (taskText) {
-      try {
-        insertNewTask();
-        setSHOULDRefetch(!SHOULDRefetch);
-        alertify.success("Task was Inserted successfully!");
-        setTaskText("");
-      } catch (error) {
-        console.error(error);
-      }
+      insertNewTask();
     } else {
       alertify.alert("Error:", "the task must contain text!", () => {
         alertify.warning("Please enter your task");
