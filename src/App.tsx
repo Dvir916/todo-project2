@@ -27,9 +27,9 @@ function App() {
 
   return (
     <AppHeader>
-      <AddTodo fetchData={refetch} />
+      <AddTodo refetchTasks={refetch} />
       {!loading ? (
-        <TodoList tasks={data.tasks} refetch={refetch} />
+        <TodoList tasks={data.tasks} refetchTasks={refetch} />
       ) : (
         <>Loading...</>
       )}

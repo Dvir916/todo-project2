@@ -6,9 +6,7 @@ import "alertifyjs/build/css/alertify.css";
 import { gql, useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
 
-const Strikethrough = styled(Box)({
-  textDecoration: "line-through",
-  color: "#c5c5c5",
+const TextDesign = styled(Box)({
   display: "flex",
   marginLeft: "10px",
   wordBreak: "break-all",
@@ -39,24 +37,23 @@ const DeleteButtonDesign = styled(Box)({
   color: "rgb(255, 0, 0)",
 });
 
-const TextDesign = styled(Box)({
-  display: "flex",
-  marginLeft: "10px",
-  wordBreak: "break-all",
-  marginTop: "auto",
-  marginBottom: "auto",
-});
-
-interface fetchingData {
+interface propsTask {
   task: Task;
-  fetchData: () => void;
+  refetchTasks: () => void;
 }
 
-const TaskItem: React.FC<fetchingData> = ({ task, fetchData }) => {
+const TaskItem: React.FC<propsTask> = ({ task, refetchTasks }) => {
   const [SHOULDRefetch, setSHOULDRefetch] = useState(true);
 
+  const strikeTrough: React.CSSProperties = task.isComplete
+    ? {
+        textDecoration: "line-through",
+        color: "#c5c5c5",
+      }
+    : {};
+
   useEffect(() => {
-    fetchData();
+    refetchTasks();
   }, [SHOULDRefetch]);
 
   const MUTATION_DELETE_TASK = gql`
@@ -100,9 +97,7 @@ const TaskItem: React.FC<fetchingData> = ({ task, fetchData }) => {
 
   return (
     <ListDesign>
-      <Box component={task.isComplete ? Strikethrough : TextDesign}>
-        {task.text}
-      </Box>
+      <TextDesign style={strikeTrough}>{task.text}</TextDesign>
 
       <CheckBoxDesign>
         <Checkbox checked={task.isComplete} onChange={completeTask} />

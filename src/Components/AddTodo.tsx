@@ -4,11 +4,11 @@ import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
 import { gql, useMutation } from "@apollo/client";
 
-interface fetchingData {
-  fetchData: () => void;
+interface propFetchingTasks {
+  refetchTasks: () => void;
 }
 
-const AddTodo: React.FC<fetchingData> = ({ fetchData }) => {
+const AddTodo: React.FC<propFetchingTasks> = ({ refetchTasks }) => {
   const MUTATION_INSERT_TASK = gql`
     mutation CreateTask($text: String) {
       createTask(text: $text) {
@@ -26,7 +26,7 @@ const AddTodo: React.FC<fetchingData> = ({ fetchData }) => {
   });
 
   useEffect(() => {
-    fetchData();
+    refetchTasks();
   }, [SHOULDRefetch]);
 
   const addTask = async (e: React.MouseEvent<HTMLElement>) => {

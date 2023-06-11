@@ -1,18 +1,17 @@
 import Tasks from "./Task";
 import { Box } from "@mui/material";
-import { gql, useQuery } from "@apollo/client";
 import { Task } from "../interfaceTypes";
 
-interface props {
+interface propsTodoList {
   tasks: Task[];
-  refetch: () => void;
+  refetchTasks: () => void;
 }
 
-const TodoList: React.FC<props> = ({ tasks, refetch }) => {
+const TodoList: React.FC<propsTodoList> = ({ tasks, refetchTasks }) => {
   return (
     <Box sx={{ width: "80%", overflow: "auto" }}>
       {tasks.map((item: Task) => (
-        <Tasks task={item} key={item.id} fetchData={refetch} />
+        <Tasks task={item} key={item.id} refetchTasks={refetchTasks} />
       ))}
     </Box>
   );
