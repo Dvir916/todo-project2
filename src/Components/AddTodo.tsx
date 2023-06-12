@@ -9,7 +9,7 @@ interface AddTodoProps {
 }
 
 const MUTATION_INSERT_TASK = gql`
-  mutation CreateTask($text: String) {
+  mutation CreateTask($text: String!) {
     createTask(text: $text) {
       id
       text

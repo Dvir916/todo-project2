@@ -43,13 +43,13 @@ interface TaskItemProps {
 }
 
 const MUTATION_DELETE_TASK = gql`
-  mutation DeleteTask($id: ID) {
+  mutation DeleteTask($id: ID!) {
     deleteTask(id: $id)
   }
 `;
 
 const MUTATION_TOGGLE_COMPLETE_TASK = gql`
-  mutation ToggleCompleteTask($id: ID, $isComplete: Boolean) {
+  mutation ToggleCompleteTask($id: String!, $isComplete: Boolean!) {
     toggleCompleteTask(id: $id, isComplete: $isComplete)
   }
 `;
@@ -62,9 +62,12 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, refetchTasks }) => {
       }
     : {};
 
-  const [taskDelete, deleteResult] = useMutation(MUTATION_DELETE_TASK, {
-    variables: { id: task.id },
-  });
+  const [taskDelete, deleteResult] = useMutation<boolean>(
+    MUTATION_DELETE_TASK,
+    {
+      variables: { id: task.id },
+    }
+  );
 
   const [taskToggleComplete, completeResult] = useMutation(
     MUTATION_TOGGLE_COMPLETE_TASK,
@@ -74,7 +77,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, refetchTasks }) => {
   );
 
   useEffect(() => {
-    if (deleteResult.loading) {
+    if (!deleteResult.loading && deleteResult.data) {
       refetchTasks();
       alertify.message("task was successfully deleted!");
     }
