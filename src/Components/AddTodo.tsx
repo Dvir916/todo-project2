@@ -1,20 +1,45 @@
-import { useDispatch } from "react-redux";
-import { insertTask } from "../Redux/TaskSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
+import { gql, useMutation } from "@apollo/client";
+import { Task } from "../interfaceTypes";
 
-const AddTodo = () => {
-  const dispatch = useDispatch();
+interface AddTodoProps {
+  refetchTasks: () => void;
+}
+
+const MUTATION_INSERT_TASK = gql`
+  mutation CreateTask($text: String!) {
+    createTask(text: $text) {
+      id
+      text
+      isComplete
+    }
+  }
+`;
+
+const AddTodo: React.FC<AddTodoProps> = ({ refetchTasks }) => {
   const [taskText, setTaskText] = useState("");
+  const [insertNewTask, insertResult] = useMutation<Task>(
+    MUTATION_INSERT_TASK,
+    {
+      variables: { text: taskText },
+    }
+  );
+
+  useEffect(() => {
+    if (!insertResult.loading && insertResult.data) {
+      refetchTasks();
+      alertify.success("Task was Inserted successfully!");
+      setTaskText("");
+    }
+  }, [insertResult.loading]);
 
   const addTask = (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
-    if (taskText.length > 0) {
-      dispatch(insertTask(taskText));
-      alertify.success("Task was Inserted successfully!");
-      setTaskText("");
+    if (taskText) {
+      insertNewTask();
     } else {
       alertify.alert("Error:", "the task must contain text!", () => {
         alertify.warning("Please enter your task");
@@ -30,7 +55,7 @@ const AddTodo = () => {
           placeholder="Insert your task here:"
           value={taskText}
           onChange={(e) => setTaskText(e.target.value)}
-          label="Task:"
+          label="Task"
         />
       </Box>
       <Button onClick={addTask} variant="contained">

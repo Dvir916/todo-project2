@@ -2,16 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
-import { store } from "./Redux/Store";
-import { Provider } from "react-redux";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: "http://localhost:4000/graphql",
+});
+
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <ApolloProvider client={client}>
       <App />
-    </Provider>
+    </ApolloProvider>
   </React.StrictMode>
 );
