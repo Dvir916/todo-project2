@@ -84,7 +84,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, refetchTasks }) => {
   }, [deleteResult.loading]);
 
   useEffect(() => {
-    if (completeResult.loading) {
+    if (!completeResult.loading && completeResult.data) {
       refetchTasks();
     }
   }, [completeResult.loading]);

@@ -25,7 +25,7 @@ const AddTodo: React.FC<AddTodoProps> = ({ refetchTasks }) => {
   });
 
   useEffect(() => {
-    if (insertResult.loading) {
+    if (!insertResult.loading && insertResult.data) {
       refetchTasks();
       alertify.success("Task was Inserted successfully!");
       setTaskText("");
