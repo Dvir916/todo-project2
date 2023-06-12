@@ -62,14 +62,11 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, refetchTasks }) => {
       }
     : {};
 
-  const [taskDelete, deleteResult] = useMutation<boolean>(
-    MUTATION_DELETE_TASK,
-    {
-      variables: { id: task.id },
-    }
-  );
+  const [taskDelete, deleteResult] = useMutation<string>(MUTATION_DELETE_TASK, {
+    variables: { id: task.id },
+  });
 
-  const [taskToggleComplete, completeResult] = useMutation(
+  const [taskToggleComplete, completeResult] = useMutation<string>(
     MUTATION_TOGGLE_COMPLETE_TASK,
     {
       variables: { id: task.id, isComplete: !task.isComplete },

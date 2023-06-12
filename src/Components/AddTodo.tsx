@@ -3,6 +3,7 @@ import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import { Box, Button, TextField } from "@mui/material";
 import { gql, useMutation } from "@apollo/client";
+import { Task } from "../interfaceTypes";
 
 interface AddTodoProps {
   refetchTasks: () => void;
@@ -20,9 +21,12 @@ const MUTATION_INSERT_TASK = gql`
 
 const AddTodo: React.FC<AddTodoProps> = ({ refetchTasks }) => {
   const [taskText, setTaskText] = useState("");
-  const [insertNewTask, insertResult] = useMutation(MUTATION_INSERT_TASK, {
-    variables: { text: taskText },
-  });
+  const [insertNewTask, insertResult] = useMutation<Task>(
+    MUTATION_INSERT_TASK,
+    {
+      variables: { text: taskText },
+    }
+  );
 
   useEffect(() => {
     if (!insertResult.loading && insertResult.data) {
